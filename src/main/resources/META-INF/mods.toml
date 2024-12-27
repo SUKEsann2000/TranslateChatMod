@@ -8,7 +8,7 @@ loaderVersion="[43,)" #mandatory
 license="MIT" #mandatory
 
 # A URL to refer people to when problems occur with this mod
-issueTrackerURL="https://github.com/yourname/chatmod/issues" #optional
+issueTrackerURL="https://github.com/SUKEsann2000/TranslateChatMod/issues" #optional
 
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
@@ -20,22 +20,22 @@ modId="chatmod" #mandatory
 version="1.0.0" #mandatory
 
 # A display name for the mod
-displayName="Chat Modifier Mod" #mandatory
+displayName="Translate Chat Mod" #mandatory
 
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
-updateJSONURL="https://example.com/updates.json" #optional
+# updateJSONURL="https://example.com/updates.json" #optional
 
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="https://example.com/chatmod" #optional
+displayURL="https://github.com/SUKEsann2000/TranslateChatMod" #optional
 
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="assets/chatmod/logo.png" #optional
 
 # A text field displayed in the mod UI
-credits="Thanks to the Forge community for their support!" #optional
+# credits="Thanks to the Forge community for their support!" #optional
 
 # A text field displayed in the mod UI
-authors="Your Name" #optional
+authors="SUKEsann2000" #optional
 
 # Display Test controls the display for your mod in the server connection screen
 # MATCH_VERSION means that your mod will cause a red X if the versions on client and server differ. This is the default behaviour and should be what you choose if you have server and client elements to your mod.
@@ -43,7 +43,7 @@ displayTest="MATCH_VERSION" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-This mod customizes the chat system in Minecraft. You can modify the message format or add custom behavior to chat messages.
+This mod translate your chat in Minecraft.
 '''
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.

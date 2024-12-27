@@ -25,7 +25,7 @@ public class ChatMod {
 
         // チャットメッセージの初期内容を取得
         String originalMessage = event.getMessage().getString();
-        System.out.println("Received Message: " + originalMessage);
+        Debug.debugConsole("Received Message: " + originalMessage);
 
         // originalMessageからプレイヤー名などを除去（スペース以降の部分を抽出）
         String messageToTranslate = originalMessage.substring(originalMessage.indexOf(" ") + 1);

@@ -7,6 +7,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraft.network.chat.Component;
 import net.minecraft.client.Minecraft;
 
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.player.Player;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
+
 import java.util.concurrent.CompletableFuture;
 
 @Mod("chatmod")
@@ -20,7 +26,8 @@ public class ChatMod {
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
         // システムメッセージは無視
-        if (event.isSystem()) return;
+        //ここから
+        //if (event.isSystem()) return;
         if (Minecraft.getInstance().player == null) return;
 
         // チャットメッセージの初期内容を取得
@@ -28,6 +35,23 @@ public class ChatMod {
         Debug.debugConsole("Received Message: " + originalMessage);
 
         // originalMessageからプレイヤー名などを除去（スペース以降の部分を抽出）
+        if(originalMessage.indexOf(" ") == -1) {
+            Debug.debugConsole("No space in message");
+        };
+        String messageFrom = originalMessage.substring(0,originalMessage.indexOf(" "));
+        String[] players = getPlayers();
+        boolean found = false;
+        for (String playerName : players) {
+            if(messageFrom.contains(playerName)) {
+                found = true;
+                break;
+            }
+        }
+        if(!found) {
+            Debug.debugConsole("Message not from player");
+            return;
+        }
+        //ここまでが例外をreturnするコード
         String messageToTranslate = originalMessage.substring(originalMessage.indexOf(" ") + 1);
 
         // イベントをキャンセル
@@ -53,5 +77,22 @@ public class ChatMod {
             return null;
         });
     }
+    private static String[] getPlayers(){
+        ClientLevel level = Minecraft.getInstance().level;
+        if(level != null) {
+            List<String> playerNames = new ArrayList<>();
+            for (Player player : level.players()){
+                playerNames.add(player.getName().getString());
+            }
+            return playerNames.toArray(new String[0]);
+        }
+        return new String[0];
+    }
+    /*private String getPlayers(){
+        ClientPacketListener listener = Minecraft.getInstance().getConnection();
+        if(listener == null) {
+            for()
+        }
+    }*/
 
 }

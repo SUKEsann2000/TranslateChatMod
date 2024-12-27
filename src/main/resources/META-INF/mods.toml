@@ -29,7 +29,7 @@ displayName="Translate Chat Mod" #mandatory
 displayURL="https://github.com/SUKEsann2000/TranslateChatMod" #optional
 
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="assets/chatmod/logo.png" #optional
+#logoFile="assets/chatmod/logo.png" #optional
 
 # A text field displayed in the mod UI
 # credits="Thanks to the Forge community for their support!" #optional

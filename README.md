@@ -1,4 +1,5 @@
 **Translate Chat mod!**
+<img src="https://img.shields.io/badge/Forge%20Gradle-Java-007396.svg?logo=Java&style=for-the-badge">
 ---
 
 How to use

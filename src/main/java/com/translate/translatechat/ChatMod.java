@@ -37,6 +37,7 @@ public class ChatMod {
         // originalMessageからプレイヤー名などを除去（スペース以降の部分を抽出）
         if(originalMessage.indexOf(" ") == -1) {
             Debug.debugConsole("No space in message");
+            return;
         };
         String messageFrom = originalMessage.substring(0,originalMessage.indexOf(" "));
         String[] players = getPlayers();

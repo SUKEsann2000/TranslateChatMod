@@ -1,3 +1,18 @@
+**Translate Chat mod!**
+---
+
+How to use
+---
+1. Install .jar file for your minecraft and forge version
+2. Add mods folder
+3. Finish🌟 You can use this mod!
+
+What happens when you use
+---
+1. Receive "ClientChatReceivedEvent"
+2. Get message and clear player name (Example: "<dev\> Hello! world!" → "Hello! world!)
+3. Fetch json from server (my Google Apps Script)
+4. Change message
 
 Source installation information for modders
 -------------------------------------------
@@ -44,3 +59,5 @@ Community Documentation: https://docs.minecraftforge.net/en/1.19.2/gettingstarte
 LexManos' Install Video: https://youtu.be/8VEdtQLuLO0
 Forge Forums: https://forums.minecraftforge.net/
 Forge Discord: https://discord.minecraftforge.net/
+
+**Welcome your Pull Requests and Issues!!**

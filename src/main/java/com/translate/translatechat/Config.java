@@ -1,3 +1,4 @@
+package com.translate.translatechat;
 /*package com.example.translate;
 
 import net.minecraft.resources.ResourceLocation;

@@ -1,4 +1,4 @@
-package com.example.translate;
+package com.translate.translatechat;
 
 import java.net.URI;
 import java.net.http.HttpClient;

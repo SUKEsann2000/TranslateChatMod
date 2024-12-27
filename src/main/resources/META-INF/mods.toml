@@ -17,7 +17,7 @@ issueTrackerURL="https://github.com/SUKEsann2000/TranslateChatMod/issues" #optio
 modId="chatmod" #mandatory
 
 # The version number of the mod
-version="1.0.0" #mandatory
+version="1.0.1" #mandatory
 
 # A display name for the mod
 displayName="Translate Chat Mod" #mandatory

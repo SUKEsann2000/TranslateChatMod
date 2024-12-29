@@ -19,7 +19,7 @@ public class FetchJson {
         // リクエストを作成
         String encodedText = URLEncoder.encode(chatText,StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(fetchURL + fetchTextType + "&" + encodedText + fetchTargetType + "&" + target))  // リダイレクトをテストするURL
+            .uri(URI.create(fetchURL + fetchTextType + encodedText + "&" + fetchTargetType + target))  // リダイレクトをテストするURL
             .build();
 
         try {

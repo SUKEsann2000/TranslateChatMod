@@ -11,7 +11,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -89,11 +88,4 @@ public class ChatMod {
         }
         return new String[0];
     }
-    /*private String getPlayers(){
-        ClientPacketListener listener = Minecraft.getInstance().getConnection();
-        if(listener == null) {
-            for()
-        }
-    }*/
-
 }

@@ -114,5 +114,10 @@ public class ChatMod {
         debug = Config.COMMON.debug.get();
 
         Debug.onLoad(debug);
+        Debug.debugConsole("Config loaded!! DebugMode now!");
+        Debug.debugConsole("fetchURL: " + fetchURL);
+        Debug.debugConsole("fetchTextType: " + fetchTextType);
+        Debug.debugConsole("fetchTargetType: " + fetchTargetType);
+        Debug.debugConsole("fetchKey: " + fetchKey);
     }
 }

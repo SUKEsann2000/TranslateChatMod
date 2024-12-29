@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FetchJson {
-    public static String main(String chatText,String target) {
+    public static String main(String chatText,String target, String fetchURL,String fetchTextType,String fetchTargetType,String fetchKey) {
         // HTTPクライアントを作成 (リダイレクトの追跡)
         HttpClient client = HttpClient.newBuilder()
             .followRedirects(HttpClient.Redirect.ALWAYS)  // リダイレクトを常に追跡
@@ -19,7 +19,7 @@ public class FetchJson {
         // リクエストを作成
         String encodedText = URLEncoder.encode(chatText,StandardCharsets.UTF_8);
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?text=" + encodedText + "&target=" + target))  // リダイレクトをテストするURL
+            .uri(URI.create(fetchURL + fetchTextType + "&" + encodedText + fetchTargetType + "&" + target))  // リダイレクトをテストするURL
             .build();
 
         try {
@@ -37,7 +37,7 @@ public class FetchJson {
                 Map<String, String> jsonMap = parseJson(responseBody);
                 System.out.println("Fetched JSON: " + jsonMap.toString());
                 //"text"を取り出し
-                String translateText = jsonMap.get("text");
+                String translateText = jsonMap.get(fetchKey);
                 System.out.println("Extracted text: " + translateText);
 
                 return translateText;

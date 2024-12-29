@@ -2,6 +2,7 @@ package com.translate.translatechat;
 
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraft.network.chat.Component;
@@ -14,12 +15,28 @@ import java.util.List;
 
 import java.util.concurrent.CompletableFuture;
 
+import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.ModLoadingContext;
+
 @Mod("chatmod")
 public class ChatMod {
+    public String fetchTextType;
+    public String fetchURL;
+    public String fetchTargetType;
+    public Boolean debug;
+    public String fetchKey;
 
     public ChatMod() {
         // イベントを登録
         MinecraftForge.EVENT_BUS.register(this);
+
+        // コンフィグを登録
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::onCommonSetup);
+        ModLoadingContext.get().registerConfig(Type.COMMON, Config.COMMON_SPEC);
+        
     }
 
     @SubscribeEvent
@@ -61,7 +78,7 @@ public class ChatMod {
         CompletableFuture.supplyAsync(() -> {
             // 言語を取得して翻訳を実行
             String language = GetLanguage.main();
-            return FetchJson.main(messageToTranslate, language);
+            return FetchJson.main(messageToTranslate, language,fetchURL,fetchTextType,fetchTargetType,fetchKey);
         }).thenAccept(translateText -> {
             // メインスレッドで翻訳後のメッセージを表示
             Minecraft.getInstance().execute(() -> {
@@ -87,5 +104,15 @@ public class ChatMod {
             return playerNames.toArray(new String[0]);
         }
         return new String[0];
+    }
+
+    private void onCommonSetup(FMLCommonSetupEvent event) {
+        fetchURL = Config.COMMON.fetchURL.get();
+        fetchTextType = Config.COMMON.fetchTextType.get();
+        fetchTargetType = Config.COMMON.fetchTargetType.get();
+        fetchKey = Config.COMMON.fetchKey.get();
+        debug = Config.COMMON.debug.get();
+
+        Debug.onLoad(debug);
     }
 }

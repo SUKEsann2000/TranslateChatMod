@@ -27,6 +27,7 @@ public class ChatMod {
     public String fetchTargetType;
     public Boolean debug;
     public String fetchKey;
+    public String playerNameIndexOf;
 
     public ChatMod() {
         // イベントを登録
@@ -51,11 +52,11 @@ public class ChatMod {
         Debug.debugConsole("Received Message: " + originalMessage);
 
         // originalMessageからプレイヤー名などを除去（スペース以降の部分を抽出）
-        if(originalMessage.indexOf(" ") == -1) {
-            Debug.debugConsole("No space in message");
+        if(originalMessage.indexOf(playerNameIndexOf) == -1) {
+            Debug.debugConsole("No player index in message");
             return;
         };
-        String messageFrom = originalMessage.substring(0,originalMessage.indexOf(" "));
+        String messageFrom = originalMessage.substring(0,originalMessage.indexOf(playerNameIndexOf));
         String[] players = getPlayers();
         boolean found = false;
         for (String playerName : players) {
@@ -69,7 +70,7 @@ public class ChatMod {
             return;
         }
         //ここまでが例外をreturnするコード
-        String messageToTranslate = originalMessage.substring(originalMessage.indexOf(" ") + 1);
+        String messageToTranslate = originalMessage.substring(originalMessage.indexOf(playerNameIndexOf) + 1);
 
         // イベントをキャンセル
         event.setCanceled(true);
@@ -112,6 +113,7 @@ public class ChatMod {
         fetchTargetType = Config.COMMON.fetchTargetType.get();
         fetchKey = Config.COMMON.fetchKey.get();
         debug = Config.COMMON.debug.get();
+        playerNameIndexOf = Config.COMMON.playerNameIndexOf.get();
 
         Debug.onLoad(debug);
         Debug.debugConsole("Config loaded!! DebugMode now!");
@@ -119,5 +121,6 @@ public class ChatMod {
         Debug.debugConsole("fetchTextType: " + fetchTextType);
         Debug.debugConsole("fetchTargetType: " + fetchTargetType);
         Debug.debugConsole("fetchKey: " + fetchKey);
+        Debug.debugConsole("playerNameIndexOf: " + playerNameIndexOf);
     }
 }

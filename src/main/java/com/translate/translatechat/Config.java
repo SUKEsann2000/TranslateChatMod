@@ -18,6 +18,7 @@ public class Config {
                 public final ForgeConfigSpec.ConfigValue<String> fetchTargetType;
                 public final ForgeConfigSpec.ConfigValue<Boolean> debug;
                 public final ForgeConfigSpec.ConfigValue<String> fetchKey;
+                public final ForgeConfigSpec.ConfigValue<String> playerNameIndexOf;
 
 
                 public CommonConfig(ForgeConfigSpec.Builder builder) {
@@ -38,6 +39,9 @@ public class Config {
                         fetchKey = builder
                                 .comment("Set Fetch JSON Key\nDefault:text")
                                 .define("fetchKey", "text");
+                        playerNameIndexOf = builder
+                                .comment("Set Player Name Start Index Of\nDefault:>")
+                                .define("playerNameIndexOf", ">");
                         builder.pop();
                 }
         }

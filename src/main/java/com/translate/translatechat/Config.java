@@ -8,7 +8,7 @@ public class Config {
 
         static {
                 ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-                COMMON = new CommonConfig(builder);
+                COMMON = new CommonConfig(builder,"general");
                 COMMON_SPEC = builder.build();
         }
 
@@ -21,9 +21,9 @@ public class Config {
                 public final ForgeConfigSpec.ConfigValue<String> playerNameIndexOf;
 
 
-                public CommonConfig(ForgeConfigSpec.Builder builder) {
-                        builder.comment("General settings")
-                                .push("general");
+                public CommonConfig(ForgeConfigSpec.Builder builder, String sectionName) {
+                        builder.comment("Settings for section " + sectionName)
+                                .push(sectionName);
                         fetchURL = builder
                                 .comment("Set Translate Fetch URL\nDefault:https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?")
                                 .define("fetchURL", "https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?");

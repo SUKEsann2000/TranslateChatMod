@@ -1,15 +1,28 @@
 package com.translate.translatechat;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 
 public class Config {
-        public static final ForgeConfigSpec COMMON_SPEC;
-        public static final CommonConfig COMMON;
+        public static Map<String, CommonConfig> CONFIGS = new HashMap<>();
+        public static ForgeConfigSpec COMMON_SPEC;
 
         static {
                 ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-                COMMON = new CommonConfig(builder,"general");
+                CONFIGS.put("general", new CommonConfig(builder,"general"));
                 COMMON_SPEC = builder.build();
+        }
+
+        public static void addConfigSection(String sectionName){
+                ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+                CommonConfig newConfig = new CommonConfig(builder, sectionName);
+                CONFIGS.put(sectionName, newConfig);
+                COMMON_SPEC = builder.build();
+
+                ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC);
         }
 
         public static class CommonConfig {

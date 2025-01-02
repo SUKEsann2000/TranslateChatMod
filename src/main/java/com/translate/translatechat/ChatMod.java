@@ -1,6 +1,7 @@
 package com.translate.translatechat;
 
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.concurrent.CompletableFuture;
-
+import com.translate.translatechat.Config.CommonConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -28,6 +29,8 @@ public class ChatMod {
     public Boolean debug;
     public String fetchKey;
     public String playerNameIndexOf;
+
+    private String sectionName = "general";
 
     public ChatMod() {
         // イベントを登録
@@ -107,13 +110,21 @@ public class ChatMod {
         return new String[0];
     }
 
+    public void setSectionName(String sectionName){
+        this.sectionName = sectionName;
+    }
+
     private void onCommonSetup(FMLCommonSetupEvent event) {
-        fetchURL = Config.COMMON.fetchURL.get();
-        fetchTextType = Config.COMMON.fetchTextType.get();
-        fetchTargetType = Config.COMMON.fetchTargetType.get();
-        fetchKey = Config.COMMON.fetchKey.get();
-        debug = Config.COMMON.debug.get();
-        playerNameIndexOf = Config.COMMON.playerNameIndexOf.get();
+        if(!Config.CONFIGS.containsKey(sectionName)){
+            throw new IllegalStateException("Invalid config section: " + sectionName);
+        }
+
+        fetchURL = Config.CONFIGS.get(sectionName).fetchURL.get();
+        fetchTextType = Config.CONFIGS.get(sectionName).fetchTextType.get();
+        fetchTargetType = Config.CONFIGS.get(sectionName).fetchTargetType.get();
+        fetchKey = Config.CONFIGS.get(sectionName).fetchKey.get();
+        debug = Config.CONFIGS.get(sectionName).debug.get();
+        playerNameIndexOf = Config.CONFIGS.get(sectionName).playerNameIndexOf.get();
 
         Debug.onLoad(debug);
         Debug.debugConsole("Config loaded!! DebugMode now!");

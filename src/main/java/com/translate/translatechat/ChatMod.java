@@ -1,7 +1,6 @@
 package com.translate.translatechat;
 
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.concurrent.CompletableFuture;
-import com.translate.translatechat.Config.CommonConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;

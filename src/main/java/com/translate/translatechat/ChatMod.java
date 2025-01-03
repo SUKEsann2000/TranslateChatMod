@@ -108,11 +108,9 @@ public class ChatMod {
         return new String[0];
     }
 
-    public void setSectionName(String sectionName){
-        this.sectionName = sectionName;
-    }
-
     private void onCommonSetup(FMLCommonSetupEvent event) {
+        //Config.addConfigSection("example");
+
         if(!Config.CONFIGS.containsKey(sectionName)){
             throw new IllegalStateException("Invalid config section: " + sectionName);
         }

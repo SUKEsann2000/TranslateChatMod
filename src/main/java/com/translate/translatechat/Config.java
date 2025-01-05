@@ -70,6 +70,11 @@ public class Config {
 
         public static String loadConfig(JsonObject configJson,String servername,String key){
                 if (configJson == null) return null;
+                System.out.println("configJson: " + configJson);
+                System.out.println("servername: " + servername);
+                System.out.println("key: " + key);
+
+                
                 JsonObject serverObject = configJson.getAsJsonObject(servername);
 
                 if(serverObject == null) return null;

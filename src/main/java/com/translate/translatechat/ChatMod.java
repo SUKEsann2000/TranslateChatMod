@@ -106,15 +106,15 @@ public class ChatMod {
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
         JsonObject config = Config.loadConfigFile();
-        if (Config.loadConfigFile() == null){
+        if (config == null){
             Config.setDefaultConfig();
         };
-        fetchURL = Config.loadConfig(config, "example", "fetchURL");
-        fetchTextType = Config.loadConfig(config, "example", "fetchTextType");
-        fetchTargetType = Config.loadConfig(config, "example", "fetchTargetType");
-        fetchKey = Config.loadConfig(config, "example", "fetchKey");
-        playerNameIndexOf = Config.loadConfig(config, "example", "playerNameIndexOf");
-        debug = Boolean.parseBoolean(Config.loadConfig(config, "example", "debug"));
+        fetchURL = Config.loadConfig(config, "general", "fetchURL");
+        fetchTextType = Config.loadConfig(config, "general", "fetchTextType");
+        fetchTargetType = Config.loadConfig(config, "general", "fetchTargetType");
+        fetchKey = Config.loadConfig(config, "general", "fetchKey");
+        playerNameIndexOf = Config.loadConfig(config, "general", "playerNameIndexOf");
+        debug = Boolean.parseBoolean(Config.loadConfig(config, "general", "debug"));
 
         Debug.onLoad(debug);
         Debug.debugConsole("Config loaded!! DebugMode now!");

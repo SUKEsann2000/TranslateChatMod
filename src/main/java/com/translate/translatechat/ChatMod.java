@@ -54,7 +54,7 @@ public class ChatMod {
 
         // originalMessageからプレイヤー名などを除去（スペース以降の部分を抽出）
         if(originalMessage.indexOf(playerNameIndexOf) == -1) {
-            Debug.debugConsole("No player index in message");
+            Debug.debugConsole("No player index inriessage");
             return;
         };
         String messageFrom = originalMessage.substring(0,originalMessage.indexOf(playerNameIndexOf));
@@ -111,6 +111,7 @@ public class ChatMod {
     private void onCommonSetup(FMLCommonSetupEvent event) {
         //Config.addConfigSection("example");
 
+        /*
         if(!Config.CONFIGS.containsKey(sectionName)){
             throw new IllegalStateException("Invalid config section: " + sectionName);
         }
@@ -121,6 +122,7 @@ public class ChatMod {
         fetchKey = Config.CONFIGS.get(sectionName).fetchKey.get();
         debug = Config.CONFIGS.get(sectionName).debug.get();
         playerNameIndexOf = Config.CONFIGS.get(sectionName).playerNameIndexOf.get();
+         */
 
         Debug.onLoad(debug);
         Debug.debugConsole("Config loaded!! DebugMode now!");

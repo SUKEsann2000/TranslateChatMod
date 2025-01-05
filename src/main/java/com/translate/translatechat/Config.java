@@ -2,11 +2,37 @@ package com.translate.translatechat;
 
 import java.util.HashMap;
 import java.util.Map;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.Gson;
+
+/*
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
+*/
 
 public class Config {
+        private static Map<String,String> defaultConfig = new HashMap<>();
+        private static final Gson gson = new Gson();
+
+        public static void setDefaultConfig(){
+                defaultConfig.put("fetchURL","https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?");
+                defaultConfig.put("fetchTextType","text=");
+                defaultConfig.put("fetchTargetType","target=");
+                defaultConfig.put("debug","false");
+                defaultConfig.put("fetchKey","text");
+                defaultConfig.put("playerNameIndexOf",">");
+                addConfig("general", defaultConfig);
+        }
+
+        public static void addConfig(String servername, Map<String,String> config){
+                JsonObject json = new JsonObject();
+                json.add(servername,gson.toJsonTree(config));
+        }
+}
+/*
         public static Map<String, CommonConfig> CONFIGS = new HashMap<>();
         public static ForgeConfigSpec COMMON_SPEC;
 
@@ -58,4 +84,4 @@ public class Config {
                         builder.pop();
                 }
         }
-}
+ */

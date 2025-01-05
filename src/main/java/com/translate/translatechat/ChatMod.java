@@ -14,11 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.concurrent.CompletableFuture;
-import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.ModLoadingContext;
 
+import com.google.gson.JsonObject;
 
 @Mod("chatmod")
 public class ChatMod {
@@ -106,21 +105,16 @@ public class ChatMod {
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
-        //Config.addConfigSection("example");
-
-        /*
-        if(!Config.CONFIGS.containsKey(sectionName)){
-            throw new IllegalStateException("Invalid config section: " + sectionName);
-        }
-
-        fetchURL = Config.CONFIGS.get(sectionName).fetchURL.get();
-        fetchTextType = Config.CONFIGS.get(sectionName).fetchTextType.get();
-        fetchTargetType = Config.CONFIGS.get(sectionName).fetchTargetType.get();
-        fetchKey = Config.CONFIGS.get(sectionName).fetchKey.get();
-        debug = Config.CONFIGS.get(sectionName).debug.get();
-        playerNameIndexOf = Config.CONFIGS.get(sectionName).playerNameIndexOf.get();
-         */
-        Config.setDefaultConfig();
+        JsonObject config = Config.loadConfigFile();
+        if (Config.loadConfigFile() == null){
+            Config.setDefaultConfig();
+        };
+        fetchURL = Config.loadConfig(config, "example", "fetchURL");
+        fetchTextType = Config.loadConfig(config, "example", "fetchTextType");
+        fetchTargetType = Config.loadConfig(config, "example", "fetchTargetType");
+        fetchKey = Config.loadConfig(config, "example", "fetchKey");
+        playerNameIndexOf = Config.loadConfig(config, "example", "playerNameIndexOf");
+        debug = Boolean.parseBoolean(Config.loadConfig(config, "example", "debug"));
 
         Debug.onLoad(debug);
         Debug.debugConsole("Config loaded!! DebugMode now!");

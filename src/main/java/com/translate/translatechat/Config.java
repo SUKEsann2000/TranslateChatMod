@@ -3,15 +3,21 @@ package com.translate.translatechat;
 import java.util.HashMap;
 import java.util.Map;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
+//import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.Gson;
 
-/*
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-*/
+//import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
+
+import java.nio.file.Path;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
 
 public class Config {
         private static Map<String,String> defaultConfig = new HashMap<>();
@@ -30,58 +36,45 @@ public class Config {
         public static void addConfig(String servername, Map<String,String> config){
                 JsonObject json = new JsonObject();
                 json.add(servername,gson.toJsonTree(config));
-        }
-}
-/*
-        public static Map<String, CommonConfig> CONFIGS = new HashMap<>();
-        public static ForgeConfigSpec COMMON_SPEC;
-
-        static {
-                ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-                CONFIGS.put("general", new CommonConfig(builder,"general"));
-                COMMON_SPEC = builder.build();
+                
+                String jsonString = gson.toJson(json);
+                writeConfigToFile(jsonString);
         }
 
-        public static void addConfigSection(String sectionName){
-                ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-                CommonConfig newConfig = new CommonConfig(builder, sectionName);
-                CONFIGS.put(sectionName, newConfig);
-                COMMON_SPEC = builder.build();
-
-                ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC);
+        private static String getConfigPath(){
+                Path configDir = FMLPaths.CONFIGDIR.get();
+                return configDir.toString() + "/translatechat.json";
         }
 
-        public static class CommonConfig {
-                public final ForgeConfigSpec.ConfigValue<String> fetchURL;
-                public final ForgeConfigSpec.ConfigValue<String> fetchTextType;
-                public final ForgeConfigSpec.ConfigValue<String> fetchTargetType;
-                public final ForgeConfigSpec.ConfigValue<Boolean> debug;
-                public final ForgeConfigSpec.ConfigValue<String> fetchKey;
-                public final ForgeConfigSpec.ConfigValue<String> playerNameIndexOf;
+        private static void writeConfigToFile(String jsonString){
+                Path path = Paths.get(getConfigPath());
+                try{
+                        Files.createDirectories(path.getParent());
 
-
-                public CommonConfig(ForgeConfigSpec.Builder builder, String sectionName) {
-                        builder.comment("Settings for section " + sectionName)
-                                .push(sectionName);
-                        fetchURL = builder
-                                .comment("Set Translate Fetch URL\nDefault:https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?")
-                                .define("fetchURL", "https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?");
-                        fetchTextType = builder
-                                .comment("Set Send Text Data Type\nDefault:text=")
-                                .define("fetchTextType","text=");
-                        fetchTargetType = builder
-                                .comment("Set Send Target Language Type\nDefault:target=")
-                                .define("fetchTargetType","target=");
-                        debug = builder
-                                .comment("Set Debug Mode\nDefault:false")
-                                .define("debug",false);
-                        fetchKey = builder
-                                .comment("Set Fetch JSON Key\nDefault:text")
-                                .define("fetchKey", "text");
-                        playerNameIndexOf = builder
-                                .comment("Set Player Name Start Index Of\nDefault:>")
-                                .define("playerNameIndexOf", ">");
-                        builder.pop();
+                        Files.write(path, jsonString.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                } catch (IOException e){
+                        e.printStackTrace();
                 }
         }
- */
+
+        public static JsonObject loadConfigFile(){
+                Path path= Paths.get(getConfigPath());
+                try{
+                        String jsonString = new String(Files.readAllBytes(path));
+                        return JsonParser.parseString(jsonString).getAsJsonObject();
+                } catch (IOException | JsonSyntaxException e){
+                        e.printStackTrace();
+                        return null;
+                }
+        }
+
+        public static String loadConfig(JsonObject configJson,String servername,String key){
+                if (configJson == null) return null;
+                JsonObject serverObject = configJson.getAsJsonObject(servername);
+
+                if(serverObject == null) return null;
+                JsonElement value = serverObject.get(key);
+                if(value == null) return null;
+                return value.getAsString();
+        }
+}

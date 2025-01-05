@@ -19,6 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.ModLoadingContext;
 
+
 @Mod("chatmod")
 public class ChatMod {
     public String fetchTextType;
@@ -28,8 +29,6 @@ public class ChatMod {
     public String fetchKey;
     public String playerNameIndexOf;
 
-    private String sectionName = "general";
-
     public ChatMod() {
         // イベントを登録
         MinecraftForge.EVENT_BUS.register(this);
@@ -37,8 +36,6 @@ public class ChatMod {
         // コンフィグを登録
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::onCommonSetup);
-        ModLoadingContext.get().registerConfig(Type.COMMON, Config.COMMON_SPEC);
-        
     }
 
     @SubscribeEvent
@@ -123,6 +120,7 @@ public class ChatMod {
         debug = Config.CONFIGS.get(sectionName).debug.get();
         playerNameIndexOf = Config.CONFIGS.get(sectionName).playerNameIndexOf.get();
          */
+        Config.setDefaultConfig();
 
         Debug.onLoad(debug);
         Debug.debugConsole("Config loaded!! DebugMode now!");

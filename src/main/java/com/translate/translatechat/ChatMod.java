@@ -1,7 +1,9 @@
 package com.translate.translatechat;
 
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,6 +21,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import com.google.gson.JsonObject;
 
+import net.minecraft.client.multiplayer.ServerData;
+
+import net.minecraftforge.eventbus.api.Event.Result;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+
 @Mod("chatmod")
 public class ChatMod {
     public String fetchTextType;
@@ -27,6 +34,8 @@ public class ChatMod {
     public Boolean debug;
     public String fetchKey;
     public String playerNameIndexOf;
+    
+    private static JsonObject config = new JsonObject();
 
     public ChatMod() {
         // イベントを登録
@@ -40,34 +49,37 @@ public class ChatMod {
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
         // システムメッセージは無視
-        //ここから
-        //if (event.isSystem()) return;
-        if (Minecraft.getInstance().player == null) return;
+        // ここから
+        // if (event.isSystem()) return;
+        if (Minecraft.getInstance().player == null)
+            return;
 
         // チャットメッセージの初期内容を取得
         String originalMessage = event.getMessage().getString();
         Debug.debugConsole("Received Message: " + originalMessage);
 
         // originalMessageからプレイヤー名などを除去（スペース以降の部分を抽出）
-        if(originalMessage.indexOf(playerNameIndexOf) == -1) {
+        if (originalMessage.indexOf(playerNameIndexOf) == -1) {
             Debug.debugConsole("No player index inriessage");
             return;
-        };
-        String messageFrom = originalMessage.substring(0,originalMessage.indexOf(playerNameIndexOf));
+        } ;
+        String messageFrom =
+                originalMessage.substring(0, originalMessage.indexOf(playerNameIndexOf));
         String[] players = getPlayers();
         boolean found = false;
         for (String playerName : players) {
-            if(messageFrom.contains(playerName)) {
+            if (messageFrom.contains(playerName)) {
                 found = true;
                 break;
             }
         }
-        if(!found) {
+        if (!found) {
             Debug.debugConsole("Message not from player");
             return;
         }
-        //ここまでが例外をreturnするコード
-        String messageToTranslate = originalMessage.substring(originalMessage.indexOf(playerNameIndexOf) + 1);
+        // ここまでが例外をreturnするコード
+        String messageToTranslate =
+                originalMessage.substring(originalMessage.indexOf(playerNameIndexOf) + 1);
 
         // イベントをキャンセル
         event.setCanceled(true);
@@ -76,12 +88,14 @@ public class ChatMod {
         CompletableFuture.supplyAsync(() -> {
             // 言語を取得して翻訳を実行
             String language = GetLanguage.main();
-            return FetchJson.main(messageToTranslate, language,fetchURL,fetchTextType,fetchTargetType,fetchKey);
+            return FetchJson.main(messageToTranslate, language, fetchURL, fetchTextType,
+                    fetchTargetType, fetchKey);
         }).thenAccept(translateText -> {
             // メインスレッドで翻訳後のメッセージを表示
             Minecraft.getInstance().execute(() -> {
                 String translatedMessage = originalMessage + "   " + translateText;
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal(translatedMessage));
+                Minecraft.getInstance().player
+                        .sendSystemMessage(Component.literal(translatedMessage));
             });
         }).exceptionally(ex -> {
             ex.printStackTrace();
@@ -92,11 +106,30 @@ public class ChatMod {
             return null;
         });
     }
-    private static String[] getPlayers(){
+
+    @SubscribeEvent
+    public void onClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
+        String serverip = getServerIp();
+        if(serverip == null) {
+            return;
+        }
+        debug = Boolean.parseBoolean(Config.loadConfig(config, serverip, "debug"));
+        if(debug == null | debug == false) {
+            debug = Boolean.parseBoolean(Config.loadConfig(config, "general", "debug"));
+            return;
+        }
+        fetchURL = Config.loadConfig(config, serverip, "fetchURL");
+        fetchTextType = Config.loadConfig(config, serverip, "fetchTextType");
+        fetchTargetType = Config.loadConfig(config, serverip, "fetchTargetType");
+        fetchKey = Config.loadConfig(config, serverip, "fetchKey");
+        playerNameIndexOf = Config.loadConfig(config, serverip, "playerNameIndexOf");
+    }
+
+    private static String[] getPlayers() {
         ClientLevel level = Minecraft.getInstance().level;
-        if(level != null) {
+        if (level != null) {
             List<String> playerNames = new ArrayList<>();
-            for (Player player : level.players()){
+            for (Player player : level.players()) {
                 playerNames.add(player.getName().getString());
             }
             return playerNames.toArray(new String[0]);
@@ -105,10 +138,10 @@ public class ChatMod {
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
-        JsonObject config = Config.loadConfigFile();
-        if (config == null){
+        config = Config.loadConfigFile();
+        if (config == null) {
             Config.setDefaultConfig();
-        };
+        } ;
         fetchURL = Config.loadConfig(config, "general", "fetchURL");
         fetchTextType = Config.loadConfig(config, "general", "fetchTextType");
         fetchTargetType = Config.loadConfig(config, "general", "fetchTargetType");
@@ -123,5 +156,15 @@ public class ChatMod {
         Debug.debugConsole("fetchTargetType: " + fetchTargetType);
         Debug.debugConsole("fetchKey: " + fetchKey);
         Debug.debugConsole("playerNameIndexOf: " + playerNameIndexOf);
+    }
+
+    private static String getServerIp() {
+        Minecraft minecraft = Minecraft.getInstance();
+        ServerData serverData = minecraft.getCurrentServer();
+        if (serverData != null) {
+            System.out.println(serverData.ip);
+            return serverData.ip;
+        }
+        return null;
     }
 }

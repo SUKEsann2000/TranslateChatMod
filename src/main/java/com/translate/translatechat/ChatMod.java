@@ -3,7 +3,6 @@ package com.translate.translatechat;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,9 +21,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import com.google.gson.JsonObject;
 
 import net.minecraft.client.multiplayer.ServerData;
-
-import net.minecraftforge.eventbus.api.Event.Result;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 
 @Mod("chatmod")
 public class ChatMod {

@@ -70,16 +70,19 @@ public class Config {
 
         public static String loadConfig(JsonObject configJson,String servername,String key){
                 if (configJson == null) return null;
-                System.out.println("configJson: " + configJson);
-                System.out.println("servername: " + servername);
-                System.out.println("key: " + key);
+                Debug.debugConsole("configJson: " + configJson);
+                Debug.debugConsole("servername: " + servername);
+                Debug.debugConsole("key: " + key);
 
                 
                 JsonObject serverObject = configJson.getAsJsonObject(servername);
 
                 if(serverObject == null) return null;
                 JsonElement value = serverObject.get(key);
-                if(value == null) return null;
+                if(value == null) {
+                        if(servername == "general") return null;
+                        return loadConfig(configJson, "general", key);
+                }
                 return value.getAsString();
         }
 }

@@ -36,6 +36,8 @@ public class ChatMod {
     public String playerNameIndexOf;
     
     private static JsonObject config = new JsonObject();
+    
+    private static String serverip = "general";
 
     public ChatMod() {
         // イベントを登録
@@ -109,7 +111,7 @@ public class ChatMod {
 
     @SubscribeEvent
     public void onClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
-        String serverip = getServerIp();
+        serverip = getServerIp();
         if(serverip == null) {
             return;
         }
@@ -118,6 +120,18 @@ public class ChatMod {
             debug = Boolean.parseBoolean(Config.loadConfig(config, "general", "debug"));
             return;
         }
+        fetchURL = Config.loadConfig(config, serverip, "fetchURL");
+        fetchTextType = Config.loadConfig(config, serverip, "fetchTextType");
+        fetchTargetType = Config.loadConfig(config, serverip, "fetchTargetType");
+        fetchKey = Config.loadConfig(config, serverip, "fetchKey");
+        playerNameIndexOf = Config.loadConfig(config, serverip, "playerNameIndexOf");
+    }
+
+    @SubscribeEvent
+    public void onClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        serverip = "general";
+
+        debug = Boolean.parseBoolean(Config.loadConfig(config, serverip, "debug"));
         fetchURL = Config.loadConfig(config, serverip, "fetchURL");
         fetchTextType = Config.loadConfig(config, serverip, "fetchTextType");
         fetchTargetType = Config.loadConfig(config, serverip, "fetchTargetType");
@@ -165,6 +179,6 @@ public class ChatMod {
             System.out.println(serverData.ip);
             return serverData.ip;
         }
-        return null;
+        return "general";
     }
 }

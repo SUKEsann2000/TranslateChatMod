@@ -172,7 +172,7 @@ public class ChatMod {
         Minecraft minecraft = Minecraft.getInstance();
         ServerData serverData = minecraft.getCurrentServer();
         if (serverData != null) {
-            System.out.println(serverData.ip);
+            Debug.debugConsole(serverip);
             return serverData.ip;
         }
         return "general";

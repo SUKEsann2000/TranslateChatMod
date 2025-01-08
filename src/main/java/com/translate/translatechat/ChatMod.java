@@ -151,6 +151,7 @@ public class ChatMod {
         config = Config.loadConfigFile();
         if (config == null) {
             Config.setDefaultConfig();
+            Config.addConfig("general", Config.defaultConfig);
         } ;
         fetchURL = Config.loadConfig(config, "general", "fetchURL");
         fetchTextType = Config.loadConfig(config, "general", "fetchTextType");

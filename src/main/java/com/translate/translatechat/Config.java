@@ -5,22 +5,21 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
-//import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.Gson;
 
-//import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 
 public class Config {
-        private static Map<String,String> defaultConfig = new HashMap<>();
+        public static Map<String,String> defaultConfig = new HashMap<>();
         private static final Gson gson = new Gson();
 
         public static void setDefaultConfig(){
@@ -30,7 +29,6 @@ public class Config {
                 defaultConfig.put("debug","false");
                 defaultConfig.put("fetchKey","text");
                 defaultConfig.put("playerNameIndexOf",">");
-                addConfig("general", defaultConfig);
         }
 
         public static void addConfig(String servername, Map<String,String> config){
@@ -50,8 +48,7 @@ public class Config {
                 Path path = Paths.get(getConfigPath());
                 try{
                         Files.createDirectories(path.getParent());
-
-                        Files.write(path, jsonString.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                        Files.write(path, jsonString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
                 } catch (IOException e){
                         e.printStackTrace();
                 }
@@ -80,7 +77,7 @@ public class Config {
                 if(serverObject == null) return null;
                 JsonElement value = serverObject.get(key);
                 if(value == null) {
-                        if(servername == "general") return null;
+                        if ("general".equals(servername)) return null;
                         return loadConfig(configJson, "general", key);
                 }
                 return value.getAsString();

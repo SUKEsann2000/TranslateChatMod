@@ -69,11 +69,12 @@ public class Config {
         if (configJson == null) return null;
         Debug.debugConsole("configJson: " + configJson);
         Debug.debugConsole("servername: " + servername);
-        Debug.debugConsole("key: " + key);
+        System.out.println("key: " + key);
 
         JsonObject serverObject = configJson.getAsJsonObject(servername);
 
         if (serverObject == null) {
+            System.out.println("serverObject is null");
             if ("general".equals(servername)) {
                 setDefaultConfig();
                 JsonObject json = new JsonObject();
@@ -87,6 +88,7 @@ public class Config {
 
         JsonElement value = serverObject.get(key);
         if (value == null) {
+            System.out.println("value is null");
             if ("general".equals(servername)) {
                 setDefaultConfig();
                 JsonObject json = new JsonObject();

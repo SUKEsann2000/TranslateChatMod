@@ -179,10 +179,11 @@ public class ChatMod {
     private void onCommonSetup(FMLCommonSetupEvent event) {
         config = Config.loadConfigFile();
         if (config == null) {
+            System.out.println("config is null");
             Config.setDefaultConfig();
             Config.addConfig("general", Config.defaultConfig);
         } ;
-        enable = Boolean.parseBoolean(Config.loadConfig(config, "general", "general"));
+        enable = Boolean.parseBoolean(Config.loadConfig(config, "general", "enable"));
         fetchURL = Config.loadConfig(config, "general", "fetchURL");
         fetchTextType = Config.loadConfig(config, "general", "fetchTextType");
         fetchTargetType = Config.loadConfig(config, "general", "fetchTargetType");

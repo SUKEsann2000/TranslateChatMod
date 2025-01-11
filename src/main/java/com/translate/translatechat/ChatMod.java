@@ -118,8 +118,11 @@ public class ChatMod {
 
         for (String key : Config.defaultConfig.keySet()) {
             String value = Config.loadConfig(config, serverip, key);
+            System.out.println("key: " + key);
+            System.out.println("value: " + value);
             if (value == null) {
                 value = Config.loadConfig(config, "general", key);
+                System.out.println("value: " + value);
                 if (value == null) {
                     continue;
                 }

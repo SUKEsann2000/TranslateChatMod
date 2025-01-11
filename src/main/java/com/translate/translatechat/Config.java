@@ -22,6 +22,7 @@ public class Config {
     private static final Gson gson = new Gson();
 
     public static void setDefaultConfig() {
+        defaultConfig.put("enable", "true");
         defaultConfig.put("fetchURL", "https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?");
         defaultConfig.put("fetchTextType", "text=");
         defaultConfig.put("fetchTargetType", "target=");

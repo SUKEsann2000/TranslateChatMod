@@ -30,9 +30,10 @@ public class ChatMod {
     public Boolean debug;
     public String fetchKey;
     public String playerNameIndexOf;
-    
+    public Boolean enable;
+
     private static JsonObject config = new JsonObject();
-    
+
     private static String serverip = "general";
 
     public ChatMod() {
@@ -50,6 +51,9 @@ public class ChatMod {
         // ここから
         // if (event.isSystem()) return;
         if (Minecraft.getInstance().player == null)
+            return;
+
+        if (!enable)
             return;
 
         // チャットメッセージの初期内容を取得
@@ -108,19 +112,44 @@ public class ChatMod {
     @SubscribeEvent
     public void onClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
         serverip = getServerIp();
-        if(serverip == null) {
+        if (serverip == null) {
             return;
         }
-        debug = Boolean.parseBoolean(Config.loadConfig(config, serverip, "debug"));
-        if(debug == null | debug == false) {
-            debug = Boolean.parseBoolean(Config.loadConfig(config, "general", "debug"));
-            return;
+
+        for (String key : Config.defaultConfig.keySet()) {
+            String value = Config.loadConfig(config, serverip, key);
+            if (value == null) {
+                value = Config.loadConfig(config, "general", key);
+                if (value == null) {
+                    continue;
+                }
+            }
+
+            switch (key) {
+                case "enable":
+                    enable = Boolean.parseBoolean(value);
+                    break;
+                case "debug":
+                    debug = Boolean.parseBoolean(value);
+                    break;
+                case "fetchURL":
+                    fetchURL = value;
+                    break;
+                case "fetchTextType":
+                    fetchTextType = value;
+                    break;
+                case "fetchTargetType":
+                    fetchTargetType = value;
+                    break;
+                case "fetchKey":
+                    fetchKey = value;
+                    break;
+                case "playerNameIndexOf":
+                    playerNameIndexOf = value;
+                    break;
+            }
         }
-        fetchURL = Config.loadConfig(config, serverip, "fetchURL");
-        fetchTextType = Config.loadConfig(config, serverip, "fetchTextType");
-        fetchTargetType = Config.loadConfig(config, serverip, "fetchTargetType");
-        fetchKey = Config.loadConfig(config, serverip, "fetchKey");
-        playerNameIndexOf = Config.loadConfig(config, serverip, "playerNameIndexOf");
+
     }
 
     @SubscribeEvent
@@ -153,6 +182,7 @@ public class ChatMod {
             Config.setDefaultConfig();
             Config.addConfig("general", Config.defaultConfig);
         } ;
+        enable = Boolean.parseBoolean(Config.loadConfig(config, "general", "general"));
         fetchURL = Config.loadConfig(config, "general", "fetchURL");
         fetchTextType = Config.loadConfig(config, "general", "fetchTextType");
         fetchTargetType = Config.loadConfig(config, "general", "fetchTargetType");
@@ -162,6 +192,7 @@ public class ChatMod {
 
         Debug.onLoad(debug);
         Debug.debugConsole("Config loaded!! DebugMode now!");
+        Debug.debugConsole("enable: " + enable);
         Debug.debugConsole("fetchURL: " + fetchURL);
         Debug.debugConsole("fetchTextType: " + fetchTextType);
         Debug.debugConsole("fetchTargetType: " + fetchTargetType);

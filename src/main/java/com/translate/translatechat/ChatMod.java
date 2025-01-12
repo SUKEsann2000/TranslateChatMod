@@ -111,18 +111,19 @@ public class ChatMod {
 
     @SubscribeEvent
     public void onClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
+        System.out.println("onClientLoggedIn");
         serverip = getServerIp();
+        System.out.println("serverip: " + serverip);
         if (serverip == null) {
             return;
         }
 
         for (String key : Config.defaultConfig.keySet()) {
-            String value = Config.loadConfig(config, serverip, key);
+            System.out.println("now for");
             System.out.println("key: " + key);
-            System.out.println("value: " + value);
+            String value = Config.loadConfig(config, serverip, key);
             if (value == null) {
                 value = Config.loadConfig(config, "general", key);
-                System.out.println("value: " + value);
                 if (value == null) {
                     continue;
                 }
@@ -131,24 +132,31 @@ public class ChatMod {
             switch (key) {
                 case "enable":
                     enable = Boolean.parseBoolean(value);
+                    System.out.println("enable: " + enable);
                     break;
                 case "debug":
                     debug = Boolean.parseBoolean(value);
+                    System.out.println("debug: " + debug);
                     break;
                 case "fetchURL":
                     fetchURL = value;
+                    System.out.println("fetchURL: " + fetchURL);
                     break;
                 case "fetchTextType":
                     fetchTextType = value;
+                    System.out.println("fetchTextType: " + fetchTextType);
                     break;
                 case "fetchTargetType":
                     fetchTargetType = value;
+                    System.out.println("fetchTargetType: " + fetchTargetType);
                     break;
                 case "fetchKey":
                     fetchKey = value;
+                    System.out.println("fetchKey: " + fetchKey);
                     break;
                 case "playerNameIndexOf":
                     playerNameIndexOf = value;
+                    System.out.println("playerNameIndexOf: " + playerNameIndexOf);
                     break;
             }
         }
@@ -159,6 +167,7 @@ public class ChatMod {
     public void onClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
         serverip = "general";
 
+        enable = Boolean.parseBoolean(Config.loadConfig(config, serverip, "enable"));
         debug = Boolean.parseBoolean(Config.loadConfig(config, serverip, "debug"));
         fetchURL = Config.loadConfig(config, serverip, "fetchURL");
         fetchTextType = Config.loadConfig(config, serverip, "fetchTextType");

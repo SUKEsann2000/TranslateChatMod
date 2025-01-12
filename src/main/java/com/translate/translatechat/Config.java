@@ -69,7 +69,7 @@ public class Config {
         if (configJson == null) return null;
         Debug.debugConsole("configJson: " + configJson);
         Debug.debugConsole("servername: " + servername);
-        System.out.println("key: " + key);
+        Debug.debugConsole("key: " + key);
 
         JsonObject serverObject = configJson.getAsJsonObject(servername);
 

@@ -29,7 +29,7 @@ public class Config {
         defaultConfig.put("debug", "false");
         defaultConfig.put("fetchKey", "text");
         defaultConfig.put("playerNameIndexOf", ">");
-        Debug.debugConsole(defaultConfig);
+        Debug.debugConsole(defaultConfig.toString());
     }
 
     public static Map<String, String> getDefaultConfig() {

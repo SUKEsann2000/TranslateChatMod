@@ -10,7 +10,7 @@ public class GetLanguage {
         String currentLanguage = minecraft.getLanguageManager().getSelected().getCode();
 
         // 言語を確認
-        System.out.println("現在の言語コード: " + currentLanguage);
+        Debug.debugConsole("現在の言語コード: " + currentLanguage);
         return currentLanguage;
     }
 }

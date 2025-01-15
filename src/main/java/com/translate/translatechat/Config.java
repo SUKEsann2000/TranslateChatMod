@@ -29,7 +29,7 @@ public class Config {
         defaultConfig.put("debug", "false");
         defaultConfig.put("fetchKey", "text");
         defaultConfig.put("playerNameIndexOf", ">");
-        System.out.println(defaultConfig);
+        Debug.debugConsole(defaultConfig);
     }
 
     public static Map<String, String> getDefaultConfig() {
@@ -79,7 +79,7 @@ public class Config {
         JsonObject serverObject = configJson.getAsJsonObject(servername);
 
         if (serverObject == null) {
-            System.out.println("serverObject is null");
+            Debug.debugConsole("serverObject is null");
             if ("general".equals(servername)) {
                 setDefaultConfig();
                 JsonObject json = new JsonObject();
@@ -93,7 +93,7 @@ public class Config {
 
         JsonElement value = serverObject.get(key);
         if (value == null) {
-            System.out.println("value is null");
+            Debug.debugConsole("value is null");
             if ("general".equals(servername)) {
                 setDefaultConfig();
                 JsonObject json = new JsonObject();

@@ -117,16 +117,16 @@ public class ChatMod {
 
     @SubscribeEvent
     public void onClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
-        System.out.println("onClientLoggedIn");
+        Debug.debugConsole("onClientLoggedIn");
         serverip = getServerIp();
-        System.out.println("serverip: " + serverip);
+        Debug.debugConsole("serverip: " + serverip);
         if (serverip == null) {
             return;
         }
 
         for (String key : defaultConfig.keySet()) {
             String value = Config.loadConfig(config, serverip, key);
-            System.out.println("key_value: " + key + "_" + value);
+            Debug.debugConsole("key_value: " + key + "_" + value);
             if (value == null) {
                 value = Config.loadConfig(config, "general", key);
                 if (value == null) {
@@ -137,31 +137,31 @@ public class ChatMod {
             switch (key) {
                 case "enable":
                     enable = Boolean.parseBoolean(value);
-                    System.out.println("enable: " + enable);
+                    Debug.debugConsole("enable: " + enable);
                     break;
                 case "debug":
                     debug = Boolean.parseBoolean(value);
-                    System.out.println("debug: " + debug);
+                    Debug.debugConsole("debug: " + debug);
                     break;
                 case "fetchURL":
                     fetchURL = value;
-                    System.out.println("fetchURL: " + fetchURL);
+                    Debug.debugConsole("fetchURL: " + fetchURL);
                     break;
                 case "fetchTextType":
                     fetchTextType = value;
-                    System.out.println("fetchTextType: " + fetchTextType);
+                    Debug.debugConsole("fetchTextType: " + fetchTextType);
                     break;
                 case "fetchTargetType":
                     fetchTargetType = value;
-                    System.out.println("fetchTargetType: " + fetchTargetType);
+                    Debug.debugConsole("fetchTargetType: " + fetchTargetType);
                     break;
                 case "fetchKey":
                     fetchKey = value;
-                    System.out.println("fetchKey: " + fetchKey);
+                    Debug.debugConsole("fetchKey: " + fetchKey);
                     break;
                 case "playerNameIndexOf":
                     playerNameIndexOf = value;
-                    System.out.println("playerNameIndexOf: " + playerNameIndexOf);
+                    Debug.debugConsole("playerNameIndexOf: " + playerNameIndexOf);
                     break;
             }
         }
@@ -198,7 +198,7 @@ public class ChatMod {
         Config.setDefaultConfig();
         defaultConfig = Config.getDefaultConfig();
         if (config == null) {
-            System.out.println("config is null");
+            Debug.debugConsole("config is null");
             Config.addConfig("general", Config.getDefaultConfig());
         } ;
         enable = Boolean.parseBoolean(Config.loadConfig(config, "general", "enable"));

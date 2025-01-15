@@ -29,20 +29,20 @@ public class FetchJson {
             // ステータスコードが200ならば、JSONデータを処理
             if (response.statusCode() == 200) {
                 String responseBody = response.body();
-                System.out.println(responseBody);
+                Debug.debugConsole(responseBody);
                 // JSONデータをパース（org.json）
                 //JSONObject jsonObject = new JSONObject(responseBody);
                 //System.out.println("Fetched JSON: " + jsonObject.toString(2));  // Pretty print
                 //return jsonObject.toString(2);
                 Map<String, String> jsonMap = parseJson(responseBody);
-                System.out.println("Fetched JSON: " + jsonMap.toString());
+                Debug.debugConsole("Fetched JSON: " + jsonMap.toString());
                 //"text"を取り出し
                 String translateText = jsonMap.get(fetchKey);
-                System.out.println("Extracted text: " + translateText);
+                Debug.debugConsole("Extracted text: " + translateText);
 
                 return translateText;
             } else {
-                System.out.println("Request failed with status: " + response.statusCode());
+                Debug.debugConsole("Request failed with status: " + response.statusCode());
                 return Integer.toString(response.statusCode()); //
             }
         } catch (Exception e) {

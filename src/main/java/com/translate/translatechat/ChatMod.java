@@ -22,15 +22,21 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.client.multiplayer.ServerData;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Mod("chatmod")
 public class ChatMod {
-    public String fetchTextType;
-    public String fetchURL;
-    public String fetchTargetType;
-    public Boolean debug;
-    public String fetchKey;
-    public String playerNameIndexOf;
-    public Boolean enable;
+    private String fetchTextType;
+    private String fetchURL;
+    private String fetchTargetType;
+    private Boolean debug;
+    private String fetchKey;
+    private String playerNameIndexOf;
+    private Boolean enable;
+
+    private Map<String, String> defaultConfig = new HashMap<>();
+    
 
     private static JsonObject config = new JsonObject();
 
@@ -118,10 +124,9 @@ public class ChatMod {
             return;
         }
 
-        for (String key : Config.defaultConfig.keySet()) {
-            System.out.println("now for");
-            System.out.println("key: " + key);
+        for (String key : defaultConfig.keySet()) {
             String value = Config.loadConfig(config, serverip, key);
+            System.out.println("key_value: " + key + "_" + value);
             if (value == null) {
                 value = Config.loadConfig(config, "general", key);
                 if (value == null) {
@@ -190,10 +195,11 @@ public class ChatMod {
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
         config = Config.loadConfigFile();
+        Config.setDefaultConfig();
+        defaultConfig = Config.getDefaultConfig();
         if (config == null) {
             System.out.println("config is null");
-            Config.setDefaultConfig();
-            Config.addConfig("general", Config.defaultConfig);
+            Config.addConfig("general", Config.getDefaultConfig());
         } ;
         enable = Boolean.parseBoolean(Config.loadConfig(config, "general", "enable"));
         fetchURL = Config.loadConfig(config, "general", "fetchURL");

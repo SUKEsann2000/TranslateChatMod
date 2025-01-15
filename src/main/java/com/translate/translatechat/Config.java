@@ -29,6 +29,11 @@ public class Config {
         defaultConfig.put("debug", "false");
         defaultConfig.put("fetchKey", "text");
         defaultConfig.put("playerNameIndexOf", ">");
+        System.out.println(defaultConfig);
+    }
+
+    public static Map<String, String> getDefaultConfig() {
+        return defaultConfig;
     }
 
     public static void addConfig(String servername, Map<String, String> config) {

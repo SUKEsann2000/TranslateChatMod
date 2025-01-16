@@ -10,8 +10,89 @@ How to use
 
 What happens when you use
 ---
+0. Load configuration file (default: .minecraft/<YOUR_INSTANCE\>/config/translatechat.json)
+
+
+You can add server configuration
+
+## Settings
+
+- **Fetch URL**
+  - **Description**: The URL used to fetch translation data.
+  - **Default**: `https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?`
+  - **Example**: 
+    ```plaintext
+    fetchURL = "https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?"
+    ```
+
+- **Fetch Text Type**
+  - **Description**: The type of text data sent for translation.
+  - **Default**: `text=`
+  - **Example**: 
+    ```plaintext
+    fetchTextType = "text="
+    ```
+
+- **Fetch Target Type**
+  - **Description**: The target language type to which the text will be translated.
+  - **Default**: `target=`
+  - **Example**: 
+    ```plaintext
+    fetchTargetType = "target="
+    ```
+
+- **Debug Mode**
+  - **Description**: Enables or disables debug mode for troubleshooting and logging purposes.
+  - **Default**: `false`
+  - **Example**: 
+    ```plaintext
+    debug = "true"
+    ```
+
+- **Fetch JSON Key**
+  - **Description**: The key used to extract the text from the fetched JSON response.
+  - **Default**: `text`
+  - **Example**: 
+    ```plaintext
+    fetchKey = "text"
+    ```
+
+- **Player Name Start Index Of**
+  - **Description**: Defines the starting index or character where the player's name begins.
+  - **Default**: `>`
+  - **Example**: 
+    ```plaintext
+    playerNameIndexOf = ">"
+    ```
+
+These settings allow for flexible configuration of the translation fetch process. Adjust the parameters to fit your specific requirements and ensure optimal performance of the translation feature.
+
 1. Receive "ClientChatReceivedEvent"
-2. Get message and clear player name (Example: "<dev\> Hello! world!" → "Hello! world!)
+2. Get message and clear player name (Example: "<dev\> Hello! world! → "Hello! world!)
+* You can also change the setting of player name index<br>
+For example (translatechat.json):
+```translatechat.json
+{
+  "general": {
+    "debug": "false",
+    "playerNameIndexOf": "\u003e",
+    "enable": "true",
+    "fetchURL": "https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?",
+    "fetchTextType": "text\u003d",
+    "fetchKey": "text",
+    "fetchTargetType": "target\u003d"
+  },
+  "mc.hypixel.net": {
+    "enable": "true",
+    "playerNameIndexOf": ":"
+  }
+}
+
+```
+When you use this configuration, your message in mc.hypixel.net will be ↓<br>
+(dev: Hello world→Hello world)
+<br>
+
 3. Fetch json from server (my Google Apps Script)
 4. Change message
 

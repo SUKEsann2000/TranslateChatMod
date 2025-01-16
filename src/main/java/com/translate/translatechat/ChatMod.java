@@ -197,10 +197,10 @@ public class ChatMod {
         config = Config.loadConfigFile();
         Config.setDefaultConfig();
         defaultConfig = Config.getDefaultConfig();
-        if (config == null) {
-            Debug.debugConsole("config is null");
+        if (config== null) {
             Config.addConfig("general", Config.getDefaultConfig());
-        } ;
+            config = Config.loadConfigFile();
+        }
         enable = Boolean.parseBoolean(Config.loadConfig(config, "general", "enable"));
         fetchURL = Config.loadConfig(config, "general", "fetchURL");
         fetchTextType = Config.loadConfig(config, "general", "fetchTextType");

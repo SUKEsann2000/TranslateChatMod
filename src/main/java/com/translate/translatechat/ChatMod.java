@@ -102,21 +102,20 @@ public class ChatMod {
             // メインスレッドで翻訳後のメッセージを表示
             Minecraft.getInstance().execute(() -> {
                 String translatedMessage = originalMessage + "   " + translateText;
-                Minecraft.getInstance().player
-                        .sendSystemMessage(Component.literal(translatedMessage));
+                Minecraft.getInstance().gui.getChat().addMessage(Component.nullToEmpty(translatedMessage));
             });
         }).exceptionally(ex -> {
             ex.printStackTrace();
             Minecraft.getInstance().execute(() -> {
                 String errorMessage = originalMessage + "   (Translation Error)";
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal(errorMessage));
+                Minecraft.getInstance().gui.getChat().addMessage(Component.nullToEmpty(errorMessage));
             });
             return null;
         });
     }
 
     @SubscribeEvent
-    public void onClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
+    public void onClientLoggedIn(ClientPlayerNetworkEvent.LoggedInEvent event) {
         Debug.debugConsole("onClientLoggedIn");
         serverip = getServerIp();
         Debug.debugConsole("serverip: " + serverip);
@@ -169,7 +168,7 @@ public class ChatMod {
     }
 
     @SubscribeEvent
-    public void onClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
+    public void onClientLoggedOut(ClientPlayerNetworkEvent.LoggedOutEvent event) {
         serverip = "general";
 
         enable = Boolean.parseBoolean(Config.loadConfig(config, serverip, "enable"));

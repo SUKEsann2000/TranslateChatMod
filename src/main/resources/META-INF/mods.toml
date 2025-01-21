@@ -2,7 +2,7 @@
 modLoader="javafml" #mandatory
 
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[43,)" #mandatory
+loaderVersion="[40,)" #mandatory
 
 # The license for your mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 license="MIT" #mandatory
@@ -56,7 +56,7 @@ modId="forge" #mandatory
 mandatory=true #mandatory
 
 # The version range of the dependency
-versionRange="[43,)" #mandatory
+versionRange="[40,)" #mandatory
 
 # An ordering relationship for the dependency - BEFORE or AFTER required if the dependency is not mandatory
 ordering="NONE"
@@ -67,6 +67,6 @@ side="BOTH"
 [[dependencies.chatmod]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.19.2,1.20)"
+versionRange="[1.18.2,1.20)"
 ordering="NONE"
 side="BOTH"

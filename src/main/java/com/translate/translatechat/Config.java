@@ -46,7 +46,7 @@ public class Config {
 
     private static String getConfigPath() {
         Path configDir = FMLPaths.CONFIGDIR.get();
-        return configDir.resolve("translatechat.json").toString();
+        return configDir.resolve("translatechat_config.json").toString();
     }
 
     private static void writeConfigToFile(String jsonString) {

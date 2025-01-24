@@ -50,19 +50,22 @@ public class Dictionary {
 
     public static String changeToDic(String text) {
         for (Map.Entry<String, String> entry : dictionary.entrySet()) {
-            //text = text.replaceAll("(?i)"+entry.getKey(), entry.getValue());
-            
+            // text = text.replaceAll("(?i)"+entry.getKey(), entry.getValue());
+            return ReplaceText.main(text, entry.getValue(), entry.getKey());
         }
         return text;
     }
 
-    private static void writeFirstDic() {
+    public static void writeFirstDic() {
         Path path = Paths.get(getDictionaryPath());
-        String jsonString = JsonParser.parseString("[\"\\glhf\"\":\\\"\\\\example\\\"\\\"]").toString();
+        String jsonString =
+                JsonParser.parseString("[\"\\glhf\"\":\\\"\\\\example\\\"\\\"]").toString();
         try {
             Files.createDirectories(path.getParent());
-            Files.write(path, jsonString.getBytes(StandardCharsets.UTF_8),
-                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            if (!Files.exists(Paths.get(getDictionaryPath()))) {
+                Files.write(path, jsonString.getBytes(StandardCharsets.UTF_8),
+                        StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

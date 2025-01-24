@@ -37,7 +37,7 @@ public class ChatMod {
     private Boolean enableDictionary;
 
     private Map<String, String> defaultConfig = new HashMap<>();
-    
+
 
     private static JsonObject config = new JsonObject();
 
@@ -131,7 +131,7 @@ public class ChatMod {
         changeSettings();
     }
 
-    public void changeSettings(){
+    public void changeSettings() {
         serverip = getServerIp();
         Debug.debugConsole("serverip: " + serverip);
         if (serverip == null) {
@@ -189,7 +189,7 @@ public class ChatMod {
         config = Config.loadConfigFile();
         Config.setDefaultConfig();
         defaultConfig = Config.getDefaultConfig();
-        if (config== null) {
+        if (config == null) {
             Config.addConfig("general", Config.getDefaultConfig());
             config = Config.loadConfigFile();
         }
@@ -204,7 +204,10 @@ public class ChatMod {
         Debug.debugConsole("fetchKey: " + fetchKey);
         Debug.debugConsole("playerNameIndexOf: " + playerNameIndexOf);
         Debug.debugConsole("enableDictionary: " + enableDictionary);
-        if(enableDictionary) Dictionary.loadDictionary();
+        if (enableDictionary) {
+            Dictionary.loadDictionary();
+            Dictionary.writeFirstDic();
+        } ;
     }
 
     private static String getServerIp() {
@@ -216,7 +219,7 @@ public class ChatMod {
         }
         return "general";
     }
-    
+
     private static String[] getPlayers() {
         ClientLevel level = Minecraft.getInstance().level;
         if (level != null) {

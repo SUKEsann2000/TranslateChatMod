@@ -2,17 +2,13 @@ package com.translate.translatechat;
 
 import java.util.regex.Pattern;
 
-class ReplaceTest {
+class ReplaceText {
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		String regex = "hello";
-		String reql = "hi";
-		String text = "Hello world!";
-		System.out.println("repcale前=>" + text);
-		System.out.println("repcale後=>" + myReplaceAll(regex,reql,text));
+	public static String main(String regex,String reql,String text) {
+		return myReplaceAll(regex,reql,text);
 	}
 	/**
 	 * 大文字小文字を区別せずにreplaceAllします

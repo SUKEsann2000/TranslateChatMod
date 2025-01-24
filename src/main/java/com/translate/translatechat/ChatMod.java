@@ -89,6 +89,9 @@ public class ChatMod {
         String messageToTranslate =
                 originalMessage.substring(originalMessage.indexOf(playerNameIndexOf) + 1);
 
+        // 翻訳をDictionaryに照らし合わせる
+        messageToTranslate = Dictionary.changeToDic(messageToTranslate);
+
         // イベントをキャンセル
         event.setCanceled(true);
 

@@ -90,7 +90,7 @@ public class ChatMod {
                 originalMessage.substring(originalMessage.indexOf(playerNameIndexOf) + 1);
 
         // 翻訳をDictionaryに照らし合わせる
-        messageToTranslate = Dictionary.changeToDic(messageToTranslate);
+        String changedMessageToTranslate = Dictionary.changeToDic(messageToTranslate);
 
         // イベントをキャンセル
         event.setCanceled(true);
@@ -99,7 +99,7 @@ public class ChatMod {
         CompletableFuture.supplyAsync(() -> {
             // 言語を取得して翻訳を実行
             String language = GetLanguage.main();
-            return FetchJson.main(messageToTranslate, language, fetchURL, fetchTextType,
+            return FetchJson.main(changedMessageToTranslate, language, fetchURL, fetchTextType,
                     fetchTargetType, fetchKey);
         }).thenAccept(translateText -> {
             // メインスレッドで翻訳後のメッセージを表示

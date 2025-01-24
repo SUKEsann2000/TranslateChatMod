@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class Config {
-    public static Map<String, String> defaultConfig = new HashMap<>();
+    private static Map<String, String> defaultConfig = new HashMap<>();
     private static final Gson gson = new Gson();
 
     public static void setDefaultConfig() {

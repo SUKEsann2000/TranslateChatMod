@@ -34,6 +34,7 @@ public class ChatMod {
     private String fetchKey;
     private String playerNameIndexOf;
     private Boolean enable;
+    private Boolean enableDictionary;
 
     private Map<String, String> defaultConfig = new HashMap<>();
     
@@ -120,7 +121,17 @@ public class ChatMod {
 
     @SubscribeEvent
     public void onClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
-        Debug.debugConsole("onClientLoggedIn");
+        Debug.debugConsole("onClientLoggingIn");
+        changeSettings();
+    }
+
+    @SubscribeEvent
+    public void onClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        Debug.debugConsole("onClientLoggingOut");
+        changeSettings();
+    }
+
+    public void changeSettings(){
         serverip = getServerIp();
         Debug.debugConsole("serverip: " + serverip);
         if (serverip == null) {
@@ -166,34 +177,12 @@ public class ChatMod {
                     playerNameIndexOf = value;
                     Debug.debugConsole("playerNameIndexOf: " + playerNameIndexOf);
                     break;
+                case "enableDictionary":
+                    enableDictionary = Boolean.parseBoolean(value);
+                    Debug.debugConsole("enableDictionary: " + enableDictionary);
+                    break;
             }
         }
-
-    }
-
-    @SubscribeEvent
-    public void onClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
-        serverip = "general";
-
-        enable = Boolean.parseBoolean(Config.loadConfig(config, serverip, "enable"));
-        debug = Boolean.parseBoolean(Config.loadConfig(config, serverip, "debug"));
-        fetchURL = Config.loadConfig(config, serverip, "fetchURL");
-        fetchTextType = Config.loadConfig(config, serverip, "fetchTextType");
-        fetchTargetType = Config.loadConfig(config, serverip, "fetchTargetType");
-        fetchKey = Config.loadConfig(config, serverip, "fetchKey");
-        playerNameIndexOf = Config.loadConfig(config, serverip, "playerNameIndexOf");
-    }
-
-    private static String[] getPlayers() {
-        ClientLevel level = Minecraft.getInstance().level;
-        if (level != null) {
-            List<String> playerNames = new ArrayList<>();
-            for (Player player : level.players()) {
-                playerNames.add(player.getName().getString());
-            }
-            return playerNames.toArray(new String[0]);
-        }
-        return new String[0];
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
@@ -204,13 +193,7 @@ public class ChatMod {
             Config.addConfig("general", Config.getDefaultConfig());
             config = Config.loadConfigFile();
         }
-        enable = Boolean.parseBoolean(Config.loadConfig(config, "general", "enable"));
-        fetchURL = Config.loadConfig(config, "general", "fetchURL");
-        fetchTextType = Config.loadConfig(config, "general", "fetchTextType");
-        fetchTargetType = Config.loadConfig(config, "general", "fetchTargetType");
-        fetchKey = Config.loadConfig(config, "general", "fetchKey");
-        playerNameIndexOf = Config.loadConfig(config, "general", "playerNameIndexOf");
-        debug = Boolean.parseBoolean(Config.loadConfig(config, "general", "debug"));
+        changeSettings();
 
         Debug.onLoad(debug);
         Debug.debugConsole("Config loaded!! DebugMode now!");
@@ -220,6 +203,8 @@ public class ChatMod {
         Debug.debugConsole("fetchTargetType: " + fetchTargetType);
         Debug.debugConsole("fetchKey: " + fetchKey);
         Debug.debugConsole("playerNameIndexOf: " + playerNameIndexOf);
+        Debug.debugConsole("enableDictionary: " + enableDictionary);
+        if(enableDictionary) Dictionary.loadDictionary();
     }
 
     private static String getServerIp() {
@@ -230,5 +215,17 @@ public class ChatMod {
             return serverData.ip;
         }
         return "general";
+    }
+    
+    private static String[] getPlayers() {
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level != null) {
+            List<String> playerNames = new ArrayList<>();
+            for (Player player : level.players()) {
+                playerNames.add(player.getName().getString());
+            }
+            return playerNames.toArray(new String[0]);
+        }
+        return new String[0];
     }
 }

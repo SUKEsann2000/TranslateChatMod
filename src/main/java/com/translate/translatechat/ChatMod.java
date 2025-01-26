@@ -9,10 +9,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraft.network.chat.Component;
 import net.minecraft.client.Minecraft;
 
+/*
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
 import java.util.ArrayList;
 import java.util.List;
+ */
 
 import java.util.concurrent.CompletableFuture;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -20,7 +22,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import com.google.gson.JsonObject;
 
+/*
 import net.minecraft.client.multiplayer.ServerData;
+ */
 
 import java.util.HashMap;
 import java.util.Map;

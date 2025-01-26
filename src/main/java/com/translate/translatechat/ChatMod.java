@@ -27,14 +27,14 @@ import java.util.Map;
 
 @Mod("chatmod")
 public class ChatMod {
-    private String fetchTextType;
-    private String fetchURL;
-    private String fetchTargetType;
-    private Boolean debug;
-    private String fetchKey;
-    private String playerNameIndexOf;
-    private Boolean enable;
-    private Boolean enableDictionary;
+    private static String fetchTextType;
+    private static String fetchURL;
+    private static String fetchTargetType;
+    private static Boolean debug;
+    private static String fetchKey;
+    private static String playerNameIndexOf;
+    private static Boolean enable;
+    private static Boolean enableDictionary;
 
     private Map<String, String> defaultConfig = new HashMap<>();
 
@@ -74,7 +74,7 @@ public class ChatMod {
         } ;
         String messageFrom =
                 originalMessage.substring(0, originalMessage.indexOf(playerNameIndexOf));
-        String[] players = getPlayers();
+        String[] players = Translate_utils.getPlayers(serverip);
         boolean found = false;
         for (String playerName : players) {
             if (messageFrom.contains(playerName)) {
@@ -92,6 +92,7 @@ public class ChatMod {
 
         // 翻訳をDictionaryに照らし合わせる
         String changedMessageToTranslate = Dictionary.changeToDic(messageToTranslate);
+        Debug.debugConsole("Changed Message: " + changedMessageToTranslate);
 
         // イベントをキャンセル
         event.setCanceled(true);
@@ -131,12 +132,38 @@ public class ChatMod {
         changeSettings();
     }
 
-    public void changeSettings() {
-        serverip = getServerIp();
+
+    private void onCommonSetup(FMLCommonSetupEvent event) {
+        config = Config.loadConfigFile();
+        Config.setDefaultConfig();
+        defaultConfig = Config.getDefaultConfig();
+        if (config == null) {
+            Config.addConfig("general", Config.getDefaultConfig());
+            config = Config.loadConfigFile();
+        }
+        changeSettings();
+
+        Debug.onLoad(debug);
+        Debug.debugConsole("Config loaded!! DebugMode now!");
+        Debug.debugConsole("enable: " + enable);
+        Debug.debugConsole("fetchURL: " + fetchURL);
+        Debug.debugConsole("fetchTextType: " + fetchTextType);
+        Debug.debugConsole("fetchTargetType: " + fetchTargetType);
+        Debug.debugConsole("fetchKey: " + fetchKey);
+        Debug.debugConsole("playerNameIndexOf: " + playerNameIndexOf);
+        Debug.debugConsole("enableDictionary: " + enableDictionary);
+        if (enableDictionary) {
+            Dictionary.writeFirstDic();
+            Dictionary.loadDictionary();
+        } ;
+    }
+    public static void changeSettings() {
+        serverip = Translate_utils.getServerIp(serverip);
         Debug.debugConsole("serverip: " + serverip);
         if (serverip == null) {
             return;
         }
+        Map<String,String> defaultConfig = Config.getDefaultConfig();
 
         for (String key : defaultConfig.keySet()) {
             String value = Config.loadConfig(config, serverip, key);
@@ -183,52 +210,5 @@ public class ChatMod {
                     break;
             }
         }
-    }
-
-    private void onCommonSetup(FMLCommonSetupEvent event) {
-        config = Config.loadConfigFile();
-        Config.setDefaultConfig();
-        defaultConfig = Config.getDefaultConfig();
-        if (config == null) {
-            Config.addConfig("general", Config.getDefaultConfig());
-            config = Config.loadConfigFile();
-        }
-        changeSettings();
-
-        Debug.onLoad(debug);
-        Debug.debugConsole("Config loaded!! DebugMode now!");
-        Debug.debugConsole("enable: " + enable);
-        Debug.debugConsole("fetchURL: " + fetchURL);
-        Debug.debugConsole("fetchTextType: " + fetchTextType);
-        Debug.debugConsole("fetchTargetType: " + fetchTargetType);
-        Debug.debugConsole("fetchKey: " + fetchKey);
-        Debug.debugConsole("playerNameIndexOf: " + playerNameIndexOf);
-        Debug.debugConsole("enableDictionary: " + enableDictionary);
-        if (enableDictionary) {
-            Dictionary.loadDictionary();
-            Dictionary.writeFirstDic();
-        } ;
-    }
-
-    private static String getServerIp() {
-        Minecraft minecraft = Minecraft.getInstance();
-        ServerData serverData = minecraft.getCurrentServer();
-        if (serverData != null) {
-            Debug.debugConsole(serverip);
-            return serverData.ip;
-        }
-        return "general";
-    }
-
-    private static String[] getPlayers() {
-        ClientLevel level = Minecraft.getInstance().level;
-        if (level != null) {
-            List<String> playerNames = new ArrayList<>();
-            for (Player player : level.players()) {
-                playerNames.add(player.getName().getString());
-            }
-            return playerNames.toArray(new String[0]);
-        }
-        return new String[0];
     }
 }

@@ -21,6 +21,9 @@ public class Config {
     private static Map<String, String> defaultConfig = new HashMap<>();
     private static final Gson gson = new Gson();
 
+    /*
+     * Set the default configuration values.
+     */
     public static void setDefaultConfig() {
         defaultConfig.put("enable", "true");
         defaultConfig.put("fetchURL", "https://script.google.com/macros/s/AKfycbxd0Z5iavmXxdxdtn71VYftLvIBzCjmE2NuxUSZw24z-JuYjuOf-FO3B922MBW3D_Y/exec?");
@@ -33,10 +36,18 @@ public class Config {
         Debug.debugConsole(defaultConfig.toString());
     }
 
+    /*
+     * Get the default configuration values.
+     */
     public static Map<String, String> getDefaultConfig() {
         return defaultConfig;
     }
 
+    /*
+     * Add a configuration to the config file.
+     * @param servername 追加するサーバー名
+     * @param config 追加するconfig（Map）
+     */
     public static void addConfig(String servername, Map<String, String> config) {
         JsonObject json = new JsonObject();
         json.add(servername, gson.toJsonTree(config));
@@ -45,11 +56,18 @@ public class Config {
         writeConfigToFile(jsonString);
     }
 
+    /*
+     * Get the path to the configuration file.
+     */
     private static String getConfigPath() {
         Path configDir = FMLPaths.CONFIGDIR.get();
         return configDir.resolve("translatechat_config.json").toString();
     }
 
+    /*
+     * Write the configuration to the configuration file.
+     * @param jsonString 書き込むjson（String）
+     */
     private static void writeConfigToFile(String jsonString) {
         Path path = Paths.get(getConfigPath());
         try {
@@ -60,6 +78,10 @@ public class Config {
         }
     }
 
+    /*
+     * Load the configuration file as a JsonObject.
+     * @return ファイルをJsonObjectとして
+     */
     public static JsonObject loadConfigFile() {
         Path path = Paths.get(getConfigPath());
         try {
@@ -71,6 +93,13 @@ public class Config {
         }
     }
 
+    /*
+     * Load the configuration value from the configuration file.
+     * @param configJson 読み込むconfig（JsonObject）
+     * @param servername 読み込むサーバー名
+     * @param key 読み込むキー
+     * @return 読み込んだ値（String）
+     */
     public static String loadConfig(JsonObject configJson, String servername, String key) {
         if (configJson == null) return null;
         Debug.debugConsole("configJson: " + configJson);

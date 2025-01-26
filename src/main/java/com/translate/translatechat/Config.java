@@ -29,6 +29,7 @@ public class Config {
         defaultConfig.put("debug", "false");
         defaultConfig.put("fetchKey", "text");
         defaultConfig.put("playerNameIndexOf", ">");
+        defaultConfig.put("enableDictionary","true");
         Debug.debugConsole(defaultConfig.toString());
     }
 

@@ -73,8 +73,7 @@ public class Dictionary {
      */
     public static String changeToDic(String text) {
         for (Map.Entry<String, String> entry : dictionary.entrySet()) {
-            //text = text.replaceAll("(?i)" + entry.getKey(), entry.getValue());
-            text = ReplaceText.main(text, entry.getKey(), entry.getValue());
+            text = text.replaceAll("(?i)" + entry.getKey(), entry.getValue());
         }
         return text;
     }

@@ -83,7 +83,7 @@ public class Dictionary {
      */
     public static void writeFirstDic() {
         Path path = getDictionaryPath();
-        String defaultContent = "{\"example\":\"test\"}";
+        String defaultContent = "{\"<Before Changing Message>\":\"After Changing Message\"}";
         
         String parsedDefaultContent = FormatJson.prettyPrint(defaultContent);
 

@@ -54,7 +54,8 @@ public class Config {
         Path path = Paths.get(getConfigPath());
         try {
             Files.createDirectories(path.getParent());
-            Files.write(path, jsonString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            String parsedJsoString = FormatJson.prettyPrint(jsonString);
+            Files.write(path, parsedJsoString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,8 +6,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraft.network.chat.Component;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.TextComponent;
 
 /*
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -112,13 +112,13 @@ public class ChatMod {
             // メインスレッドで翻訳後のメッセージを表示
             Minecraft.getInstance().execute(() -> {
                 String translatedMessage = originalMessage + "   " + translateText;
-                Minecraft.getInstance().gui.getChat().addMessage(Component.nullToEmpty(translatedMessage));
+                Minecraft.getInstance().gui.getChat().addMessage(new TextComponent(translatedMessage));
             });
         }).exceptionally(ex -> {
             ex.printStackTrace();
             Minecraft.getInstance().execute(() -> {
                 String errorMessage = originalMessage + "   (Translation Error)";
-                Minecraft.getInstance().gui.getChat().addMessage(Component.nullToEmpty(errorMessage));
+                Minecraft.getInstance().gui.getChat().addMessage(new TextComponent(errorMessage));
             });
             return null;
         });

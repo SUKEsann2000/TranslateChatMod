@@ -84,11 +84,13 @@ public class Dictionary {
     public static void writeFirstDic() {
         Path path = getDictionaryPath();
         String defaultContent = "{\"example\":\"test\"}";
+        
+        String parsedDefaultContent = FormatJson.prettyPrint(defaultContent);
 
         try {
             Files.createDirectories(path.getParent()); // Ensure the parent directory exists
             if (Files.notExists(path)) {
-                Files.writeString(path, defaultContent, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+                Files.writeString(path, parsedDefaultContent, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
                 System.out.println("Default dictionary file created: " + path);
             }
         } catch (IOException e) {
